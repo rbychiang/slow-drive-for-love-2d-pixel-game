@@ -18,8 +18,16 @@ export class MainMenu extends Phaser.Scene {
 
         this.grass = this.add.tileSprite(640, 360, 720, 360, 'grass');
 
+        this.add.text(640, 220, '❤️ Welcome to Slow Drive For Love ❤️', {
+            fontFamily: 'Georgia, "Goudy Bookletter 1911", serif',
+            fontSize: '40px',
+            color: '#ff9696', // Dark Pink color
+            stroke: '#fff',
+            strokeThickness: 2
+        }).setOrigin(0.5);
+
         // Add menu elements
-        this.add.text(640, 300, 'Main Menu', {
+        this.add.text(640, 320, 'Main Menu', {
             fontFamily: 'Georgia, "Goudy Bookletter 1911", serif',
             fontSize: '50px',
             color: '#ff69b4', // Pink color
@@ -28,7 +36,7 @@ export class MainMenu extends Phaser.Scene {
             strokeThickness: 2
         }).setOrigin(0.5);
 
-        const playButton = this.add.text(550, 350, 'Start Game', {
+        const playButton = this.add.text(550, 370, 'Start Game', {
             fontFamily: 'Georgia, "Goudy Bookletter 1911", serif',
             fontSize: '35px',
             color: '#ff69b4', // Pink color
@@ -39,7 +47,7 @@ export class MainMenu extends Phaser.Scene {
 
         this.tweens.add({
             targets: playButton,
-            y: 370,
+            y: 390,
             duration: 1000,
             ease: 'Sine.inOut',
             yoyo: true,
