@@ -428,6 +428,13 @@ export class Game extends Phaser.Scene {
         this.tweens.add({
             targets: popupText,
             duration: 1000,
-        });    
+        });
+
+        this.time.delayedCall(10000, () => {
+            this.bgMusic.stop();
+            this.scene.stop(); 
+            this.scene.launch('MainMenu');
+            popupText.visible = false;    
+        }, [], this);
     }
 }
