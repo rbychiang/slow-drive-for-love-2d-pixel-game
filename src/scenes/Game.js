@@ -18,7 +18,6 @@ export class Game extends Phaser.Scene {
     winHeartSound;
     countdownSound;
     grassSound;
-    endMusic;
 
     initialTime;
     timerText;
@@ -52,7 +51,7 @@ export class Game extends Phaser.Scene {
         this.load.spritesheet('chocolate', 'assets/chocolate-sheet.png',  { frameWidth: 32, frameHeight: 32 });
 
         this.load.audio('bgMusic', 'assets/audio/bgmusic.wav');
-        this.load.audio('endMusic', 'assets/audio/endMusic.wav');
+        this.load.audio('endMusic', 'assets/audio/endmusic.wav');
         this.load.audio('clappingsound', 'assets/audio/clappingsound.wav');
         this.load.audio('winheart', 'assets/audio/winheart.wav');
         this.load.audio('losesound', 'assets/audio/losesound.wav');
@@ -63,7 +62,6 @@ export class Game extends Phaser.Scene {
     create() {
         // Initialise background music
         this.bgMusic = this.sound.add('bgMusic');
-        this.endMusic = this.sound.add('endMusic');
         
         // Initialise win heart and grass sounds
         this.winHeartSound = this.sound.add('winheart');
@@ -388,7 +386,8 @@ export class Game extends Phaser.Scene {
         }
 
         if(win){
-            this.endMusic.play({
+            const endMusic = this.sound.add('endMusic');
+            endMusic.play({
                 loop: true,
                 repeat: 1,
                 volume: 0.4 // Set volume to 40%,      
@@ -396,12 +395,12 @@ export class Game extends Phaser.Scene {
 
             let loopCount = 0;
 
-            this.endMusic.on('looped', () => {
+            endMusic.on('looped', () => {
                 loopCount++;
 
                 // After it has looped once (meaning it has played 2 times total)
                 if (loopCount >= 1) {
-                    this.endMusic.stop(); // Stop the music
+                    endMusic.stop(); // Stop the music
                 }
             });
 
