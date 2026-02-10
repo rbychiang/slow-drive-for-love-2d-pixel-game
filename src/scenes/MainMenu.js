@@ -54,7 +54,7 @@ export class MainMenu extends Phaser.Scene {
         });
 
         if (this.sys.game.device.os.iOS || this.sys.game.device.os.android || this.sys.game.device.os.windowsPhone) {
-            this.add.text(640, 510, 'This game only works on desktop.\r         \'Start Game\' is disabled', {
+            this.add.text(640, 100, 'This game only works on desktop.\r         \'Start Game\' is disabled', {
                 fontFamily: 'Georgia, "Goudy Bookletter 1911", serif',
                 fontSize: '20px',
                 color: '#ff0000', // Red color
