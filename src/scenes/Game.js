@@ -18,10 +18,15 @@ export class Game extends Phaser.Scene {
     winHeartSound;
     countdownSound;
     grassSound;
+    endMusic;
+    clappingSound;
+    loseSound;
 
     initialTime;
     timerText;
     timedEvent;
+
+    keyEscape;
 
     constructor() {
         super('Game');
@@ -62,10 +67,13 @@ export class Game extends Phaser.Scene {
     create() {
         // Initialise background music
         this.bgMusic = this.sound.add('bgMusic');
+        this.endMusic = this.sound.add('endMusic');
         
-        // Initialise win heart and grass sounds
+        // Initialise sound effects;
         this.winHeartSound = this.sound.add('winheart');
         this.grassSound = this.sound.add('grasssound');
+        this.clappingSound = this.sound.add('clappingsound');
+        this.loseSound = this.sound.add('losesound');
 
         // Setup tile sprites
         this.grass = this.add.tileSprite(640, 360, 720, 360, 'grass');
@@ -88,6 +96,9 @@ export class Game extends Phaser.Scene {
         // Activate cursors to detect keys
         this.cursors = this.input.keyboard.createCursorKeys();
 
+        // Create a key object for ESC
+        this.keyEscape = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
+
         this.emitter = this.add.particles(0, 0, 'heart', {
             speed: 100,
             frequency: -1,
@@ -105,6 +116,14 @@ export class Game extends Phaser.Scene {
             fontFamily: 'Georgia, "Goudy Bookletter 1911", serif',
             fontSize: '32px',
             color: '#ff69b4', // Pink color
+            fontStyle: 'italic',
+            stroke: '#fff',
+            strokeThickness: 2
+        }).setOrigin(0.5);
+
+        this.add.text(640, 610, 'Hit \'Spacebar\' to pause the game', {
+            fontSize: '20px',
+            color: '#ff69b4',
             fontStyle: 'italic',
             stroke: '#fff',
             strokeThickness: 2
@@ -192,11 +211,15 @@ export class Game extends Phaser.Scene {
         }, this);
 
         if(this.cursors.space.isDown){
-            this.bgMusic.stop();
-            this.countdownSound.stop();
-            this.grassSound.stop();
+            this.stopMusic();
             this.scene.pause(); 
             this.scene.launch('Pause');
+        }
+
+        if(this.keyEscape.isDown){
+            this.stopMusic();
+            this.scene.stop(); 
+            this.scene.launch('MainMenu');
         }
 
         if(this.cursors.left.isDown){
@@ -216,6 +239,15 @@ export class Game extends Phaser.Scene {
             this.nextFlowerLocationX = 970;
             this.nextFlowerLocationY = 220;
         }
+    }
+
+    stopMusic(){
+        this.bgMusic.stop();
+        this.countdownSound.stop();
+        this.grassSound.stop();
+        this.clappingSound.stop();
+        this.loseSound.stop();
+        this.endMusic.stop();
     }
 
     startGame(){
@@ -385,9 +417,8 @@ export class Game extends Phaser.Scene {
             text = 'Aww! You missed most of my hearts!\r But at least you caught the best ones!\r Happy Valentine\'s Day';
         }
 
-        if(win){
-            const endMusic = this.sound.add('endMusic');
-            endMusic.play({
+        if(win){           
+            this.endMusic.play({
                 loop: true,
                 repeat: 1,
                 volume: 0.4 // Set volume to 40%,      
@@ -395,23 +426,21 @@ export class Game extends Phaser.Scene {
 
             let loopCount = 0;
 
-            endMusic.on('looped', () => {
+            this.endMusic.on('looped', () => {
                 loopCount++;
 
                 // After it has looped once (meaning it has played 2 times total)
                 if (loopCount >= 1) {
-                    endMusic.stop(); // Stop the music
+                    this.endMusic.stop(); // Stop the music
                 }
             });
-
-            const clappingsound = this.sound.add('clappingsound');
-            clappingsound.play({
+    
+            this.clappingSound.play({
                 volume: 0.3 // Set volume to 30%,      
             });
         }
-        else{
-            const loseSound = this.sound.add('losesound');
-            loseSound.play({
+        else{    
+            this.loseSound.play({
                 volume: 0.25 // Set volume to 25%,      
             });
         }
