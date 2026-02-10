@@ -53,7 +53,7 @@ export class MainMenu extends Phaser.Scene {
             this.scene.start('Game'); // Stop MainMenu and start MainGame
         });
 
-        if (!this.sys.game.device.os.desktop) {
+        if (this.sys.game.device.os.iOS || this.sys.game.device.os.android || this.sys.game.device.os.windowsPhone) {
             this.add.text(640, 510, 'This game only works on desktop.\r         \'Start Game\' is disabled', {
                 fontFamily: 'Georgia, "Goudy Bookletter 1911", serif',
                 fontSize: '20px',
