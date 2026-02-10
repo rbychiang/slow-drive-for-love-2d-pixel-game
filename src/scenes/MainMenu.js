@@ -52,6 +52,19 @@ export class MainMenu extends Phaser.Scene {
             this.scene.stop(); 
             this.scene.start('Game'); // Stop MainMenu and start MainGame
         });
+
+        if (!this.sys.game.device.os.desktop) {
+            this.add.text(640, 510, 'This game only works on desktop.\r         \'Start Game\' is disabled', {
+                fontFamily: 'Georgia, "Goudy Bookletter 1911", serif',
+                fontSize: '20px',
+                color: '#ff0000', // Red color
+                fontStyle: 'italic',
+                stroke: '#fff',
+                strokeThickness: 2
+            }).setOrigin(0.5);
+
+            playButton.disableInteractive();
+        }
     }
 
     update() {
